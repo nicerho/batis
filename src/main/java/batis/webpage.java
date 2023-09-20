@@ -3,6 +3,7 @@ package batis;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class webpage {
 	@Autowired // xml에 등록된 bean에 대한 id값을 가져올 때 사용
 	BasicDataSource datasource;// xml에 매핑된걸 가져오기
-	@Inject//xml에 대한 데이터를 가져올떄 사용하는 의존성주입
+	@Inject // xml에 대한 데이터를 가져올떄 사용하는 의존성주입
 	private SqlSessionFactory sqlsessionfactory;
-	@Resource//@Autowired 의 확장정도로 생각핮다
+	@Resource // @Autowired 의 확장정도로 생각핮다
 	private SqlSessionTemplate sqlsession;
 
 	@RequestMapping("login.do")
@@ -55,5 +57,13 @@ public class webpage {
 			System.out.println("error");
 		}
 		return "/WEB-INF/jsp/login";
+	}
+
+	@RequestMapping("dataSelect.do")
+	public String dataSelect(@ModelAttribute("review") dataVO datavo,Model model) throws Exception{
+		SqlSession se = sqlsessionfactory.openSession();
+		datavo = se.selectOne("reviewDB.selectCount");
+		System.out.println(datavo.getCnt());
+		return null;
 	}
 }

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class dataVO {
 	
-	private String ridx, rname, rpw, rtext, rdate;
+	private String ridx, rname, rpw, rtext, rdate,cnt;
 }

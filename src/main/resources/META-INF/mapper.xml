@@ -5,10 +5,12 @@
 	resultType : select 에서만 사용,
 -->
 	<select id="selectall" resultType="Datavo" parameterType="string">
-	
 		select * from review order by ridx desc
 	</select>
 	<insert id="review_insert">
 		insert into review values('0', #{rname}, #{rpw}, #{rtext}, now());
 	</insert>
+	<select id="selectCount" resultType="Datavo" parameterType="string">
+	select count(*) as cnt from review;
+	</select>
 </mapper>
