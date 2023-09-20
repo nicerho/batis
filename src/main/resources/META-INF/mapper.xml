@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviewDB">
+<!-- parameterType : string int double long 등 ...
+	resultType : select 에서만 사용,
+-->
+	<select id="selectall" resultType="Datavo" parameterType="string">
+	
+		select * from review order by ridx desc
+	</select>
+	<insert id="review_insert">
+		insert into review values('0', #{rname}, #{rpw}, #{rtext}, now());
+	</insert>
+</mapper>

@@ -10,7 +10,7 @@
 <form id="f" method="post" action="./dataInsert.do">
 고객명 : <input type="text" name="rname"><br>
 비밀번호 : <input type="password" name="rpw"><br>
-본문 : <textarea cols="200" rows="4" name="rpw"></textarea><br>
+본문 : <textarea cols="200" rows="4" name="rtext"></textarea><br>
 <input type="submit" value="등록">
 </form>
 </body>
