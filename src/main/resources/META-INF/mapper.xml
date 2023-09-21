@@ -4,13 +4,30 @@
 <!-- parameterType : string int double long 등 ...
 	resultType : select 에서만 사용,
 -->
-	<select id="selectall" resultType="Datavo" parameterType="string">
-		select * from review order by ridx desc
+	<select id="selectall" resultType="Datavo" parameterType="int">
+		select * from review order by ridx desc limit #{z},2
+	</select>
+	<!-- 내용검색
+	mysql : concat
+	oracle : rtext like '%'||#{search}||'%' 
+	mssql : rtext like '%'+#{search}+'%'
+	 -->
+	<select id="selectSearch" resultType="Datavo" parameterType="string">
+		select * from review where rtext like CONCAT('%',#{search},'%') order by ridx desc
 	</select>
 	<insert id="review_insert">
 		insert into review values('0', #{rname}, #{rpw}, #{rtext}, now());
 	</insert>
-	<select id="selectCount" resultType="Datavo" parameterType="string">
+	<select id="selectCount" resultType="string" parameterType="string">
 	select count(*) as cnt from review;
 	</select>
+	<delete id="deleteById">
+	delete from review where ridx = #{value}
+	</delete>
+	<select id="selectOne" resultType="Datavo" parameterType="string">
+	select * from review where ridx = #{ridx}
+	</select>
+	<update id="updateById">
+	update review set rtext=#{rtext},rdate=now() where ridx=#{ridx}
+	</update>
 </mapper>
