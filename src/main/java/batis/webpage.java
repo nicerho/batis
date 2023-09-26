@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -160,25 +161,22 @@ public class webpage {
 	}
 
 	@PostMapping("fileUpload")
-	public void fileUpload(@RequestParam MultipartFile[] mfile, HttpServletRequest req,FileVO fileVO)
+	public void fileUpload(@RequestParam MultipartFile[] mfile, HttpServletRequest req)
 			throws IOException, InterruptedException {
 		String dir = req.getServletContext().getRealPath("/files/");
 		//String extension = StringUtils.getFilenameExtension(mfile[0].getOriginalFilename()); 확장자 가져오기
 		UUID uuid = null;
 		String name = null;
 		String extension = null;
+		List<String> list = new Vector<>();
 		for (int x = 0; x < mfile.length; x++) {
 			uuid = UUID.randomUUID();
 			extension = "."+StringUtils.getFilenameExtension(mfile[x].getOriginalFilename());
 			name = uuid.toString()+extension;
-			Thread.sleep(100);
 			FileCopyUtils.copy(mfile[x].getBytes(),new File(dir+name));
+			list.add("./files/"+name);
 		}
-		System.out.println(dir);
 		SqlSession se = sqlsessionfactory.openSession();
-		int a = se.insert("reviewDB.fileInsert","./files/"+name);
-		if(a>0) {
-			System.out.println("good");
-		}
+		int a = se.insert("reviewDB.fileInsert",list.toString());
 	}
 }
