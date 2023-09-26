@@ -13,7 +13,7 @@
 	<!-- SQL 정보 파트 -->
 	<context:annotation-config />
 	<bean id="datasource"
-		class="org.apache.commons.dbcp.BasicDataSource">
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName"
 			value="com.mysql.jdbc.Driver"></property>
 		<property name="url"

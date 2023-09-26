@@ -30,4 +30,7 @@
 	<update id="updateById">
 	update review set rtext=#{rtext},rdate=now() where ridx=#{ridx}
 	</update>
+	<insert id="fileInsert">
+		insert into files values('0',#{fname})
+	</insert>
 </mapper>

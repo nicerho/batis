@@ -1,14 +1,17 @@
 package batis;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.ibatis.session.SqlSession;
@@ -17,11 +20,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -93,12 +99,12 @@ public class webpage {
 				data = se.selectList("reviewDB.selectall", ridx);
 			} else {
 				data = se.selectList("reviewDB.selectSearch", search);
-				if(data.size()==0) {
-					
+				if (data.size() == 0) {
+
 				}
 			}
 			model.addAttribute("data", data);
-			model.addAttribute("search",search);
+			model.addAttribute("search", search);
 			model.addAttribute("cnt", ct);
 			se.close();
 		} catch (Exception e) {
@@ -151,5 +157,28 @@ public class webpage {
 		System.out.println(a);
 		se.close();
 		return redirectView;
+	}
+
+	@PostMapping("fileUpload")
+	public void fileUpload(@RequestParam MultipartFile[] mfile, HttpServletRequest req,FileVO fileVO)
+			throws IOException, InterruptedException {
+		String dir = req.getServletContext().getRealPath("/files/");
+		//String extension = StringUtils.getFilenameExtension(mfile[0].getOriginalFilename()); 확장자 가져오기
+		UUID uuid = null;
+		String name = null;
+		String extension = null;
+		for (int x = 0; x < mfile.length; x++) {
+			uuid = UUID.randomUUID();
+			extension = "."+StringUtils.getFilenameExtension(mfile[x].getOriginalFilename());
+			name = uuid.toString()+extension;
+			Thread.sleep(100);
+			FileCopyUtils.copy(mfile[x].getBytes(),new File(dir+name));
+		}
+		System.out.println(dir);
+		SqlSession se = sqlsessionfactory.openSession();
+		int a = se.insert("reviewDB.fileInsert","./files/"+name);
+		if(a>0) {
+			System.out.println("good");
+		}
 	}
 }

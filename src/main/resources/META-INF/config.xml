@@ -3,5 +3,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="batis.dataVO" alias="Datavo" />
+		<typeAlias type="batis.FileVO" alias="fileVO" />
 	</typeAliases>
+	
 </configuration>
