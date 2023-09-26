@@ -14,6 +14,7 @@
 </body>
 <script>
 	var code = document.getElementById("filediv");
+	
 	function plus() {
 		var ea = code.children.length;
 		if (ea < 4) {

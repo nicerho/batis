@@ -169,6 +169,9 @@ public class webpage {
 		String name = null;
 		String extension = null;
 		List<String> list = new Vector<>();
+		/*StringBuffer sb = new StringBuffer();
+		 * 
+		 * */
 		for (int x = 0; x < mfile.length; x++) {
 			uuid = UUID.randomUUID();
 			extension = "."+StringUtils.getFilenameExtension(mfile[x].getOriginalFilename());
@@ -177,6 +180,7 @@ public class webpage {
 			list.add("./files/"+name);
 		}
 		SqlSession se = sqlsessionfactory.openSession();
-		int a = se.insert("reviewDB.fileInsert",list.toString());
+		int a = se.insert("reviewDB.fileInsert",String.join(",",list));
+		//String.join : List에서 요소를 문자열로 변경
 	}
 }

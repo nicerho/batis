@@ -33,4 +33,7 @@
 	<insert id="fileInsert">
 		insert into files values('0',#{fname})
 	</insert>
+	<select id="selectAllFile" resultType="fileVO" parameterType="string">
+		select * from files order by fidx desc;
+	</select>
 </mapper>
