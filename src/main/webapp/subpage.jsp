@@ -7,9 +7,7 @@
 <title>sub</title>
 </head>
 <body>
-<header><%@ include file="./top" %></header>
-<nav></nav>
-<main></main>
-<footer></footer>
+ <nav><%@ include file="./top.jsp" %></nav>
+ ${sub}
 </body>
 </html>

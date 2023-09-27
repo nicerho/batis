@@ -49,4 +49,26 @@ public class webpage2 {
 		}
 		return "/WEB-INF/jsp/IdCheck";
 	}
+	@RequestMapping("/index")
+	public String index(Model model) {
+		model.addAttribute("index","index");
+		top(model);
+		foot(model);
+		return "index";
+	}
+	@RequestMapping("/top")
+	public String top(Model model) {
+		model.addAttribute("top","top2");
+		return "top";
+	}
+	@RequestMapping("/subpage")
+	public String sub(Model model) {
+		model.addAttribute("sub","sub");
+		return "subpage";
+	}
+	@RequestMapping("/footer")
+	public String foot(Model model) {
+		model.addAttribute("footer","footer2");
+		return "footer";
+	}
 }

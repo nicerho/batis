@@ -7,6 +7,9 @@
 <title>Main</title>
 </head>
 <body>
-
+<header></header>
+<nav><jsp:include page="./top.jsp" flush="true"></jsp:include></nav>
+<main>${index}</main>
+<footer><%@ include file="./footer.jsp" %></footer>
 </body>
 </html>
