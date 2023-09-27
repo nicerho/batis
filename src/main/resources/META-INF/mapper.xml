@@ -36,4 +36,7 @@
 	<select id="selectAllFile" resultType="fileVO" parameterType="string">
 		select * from files order by fidx desc;
 	</select>
+	<select id="searchId" parameterType="string" resultType="md">
+	select mno,mid,mpass,memail from member where mid=#{parameter}
+	</select>
 </mapper>

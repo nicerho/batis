@@ -14,7 +14,7 @@
 </body>
 <script>
 function popup(){
-	window.open("http://192.168.110.222:8080/batis/popup.jsp","","width=500 height 500");
+	window.open("./load.jsp","","width=500 height=500;");
 }
 </script>
 </html>
