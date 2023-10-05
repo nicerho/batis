@@ -9,7 +9,12 @@
 <body>
 <input type="button" value="click" id="btn"><br>
 ID : <input type="text" name="mid" id="mid"><br>
+전화번호: <input type="text" name="mtel" id="mtel"><br>
 <input type="button" value="click2" id="btn2">
+<input type="button" value="click3" id="btn3">
+<input type="button" value="put메서드" id="btn4">
+
+
 </body>
 <script>
 document.querySelector("#btn").addEventListener("click",function(){
@@ -23,24 +28,63 @@ document.querySelector("#btn").addEventListener("click",function(){
 	});
 });
 
-document.querySelector("#btn2").addEventListener("click",function(){
+//배열값이 아닌 name 형태로 넘기는 방식
+document.querySelector("#btn2").addEventListener("click", function(){
 	this.mid = document.querySelector("#mid").value;
-	fetch("./ajax.do",{
-		method:"POST",
-		cache:"no-cache",
-		headers:{
-			"Content-Type" : "application/x-www-form-urlencoded"
+	this.mtel = document.querySelector("#mtel").value;
+	
+	fetch("./ajax.do", {
+		method: "POST",
+		cache: "no-cache",
+		headers: {
+			"Content-Type":"application/x-www-form-urlencoded"
 		},
-		body:JSON.stringify({
-			userid:this.mid
-		})
-	})
-	.then(function(aa){
+		body: "userid="+this.mid + "&usertel="+this.mtel
+	}).then(function(aa){
 		return aa.text();
 	}).then(function(bb){
 		console.log(bb);
 	}).catch(function(error){
-		console.log("Data Error")
+		console.log("Data Error!!");
+	});
+});
+//JSON 배열로 넘기는 방식
+document.querySelector("#btn3").addEventListener("click", function(){
+	this.mid = document.querySelector("#mid").value;
+	this.mtel = document.querySelector("#mtel").value;
+	fetch("./ajax2", {
+		method: "POST",
+		cache: "no-cache",
+		headers:{
+			"Content-Type":"application/json;char-set=utf-8"
+		},
+		body: JSON.stringify({
+			"userid":this.mid,
+			"usertel":this.mtel
+		})
+	}).then(function(aa){
+		return aa.text();
+	}).then(function(bb){
+		console.log(bb);
+	}).catch(function(error){
+		console.log("Data Error!!");
+	});
+});
+document.querySelector("#btn4").addEventListener("click",function(){
+	this.mid = document.querySelector("#mid").value;
+	fetch("./put/"+this.mid,{
+		method : "PUT",
+		/*headers : {
+			"Content-Type":"application/x-www-form-urlencoded"
+		},
+		body : "userid="+this.mid*/
+	}).then(function(aa){
+		console.log(aa);
+		//return aa.text();
+	}).then(function(bb){
+		//console.log(bb);
+	}).catch(function(error){
+		console.log("Data Error!!");
 	});
 })
 </script>

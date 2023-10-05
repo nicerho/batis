@@ -1,5 +1,6 @@
 package batis;
 
+import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -9,16 +10,25 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -26,7 +36,12 @@ public class webpage2 {
 	private MemberDTO md;
 	@Resource(name = "filem")
 	private FileModule fm;
-
+	
+	@PostMapping("/gameok.do")
+	public void game() {
+		System.out.println("good");
+	}
+	
 	@PostMapping("/pay2.do")
 	public String pay2(@RequestParam(required = false) String product_name,
 			@RequestParam(required = false) String product_money, @RequestParam(required = false) String product_code,
@@ -160,9 +175,39 @@ public class webpage2 {
 	}
 
 	@PostMapping("/ajax.do")
-	public String ajax(@RequestParam(required=false) String userid,Model model) {
+	public String ajax(@RequestParam(required = false) String userid, Model model) {
 		System.out.println(userid);
-		model.addAttribute("mid",userid);
+		model.addAttribute("mid", userid);
 		return "ajax";
+	}
+
+	// 프론트에서 JSON으로 넘어올때 쓴다
+	@PostMapping("ajax2")
+	public String ajax2(@RequestBody String data, Model model) throws Exception {
+		JSONParser jp = new JSONParser();
+		JSONObject jo = (JSONObject) jp.parse(data);
+		model.addAttribute("mid", jo.get("userid"));
+		return "ajax";
+	}
+
+	@PutMapping("put/{userid}")
+	public void ajax3(@PathVariable("userid") String userid,HttpServletResponse res) throws Exception{
+		System.out.println(userid);
+		PrintWriter pw = res.getWriter();
+		pw.write("ok");
+		pw.close();
+	}
+	@DeleteMapping("delete/{productCode}")
+	public void deleteTest(@PathVariable("productCode") int productCode,HttpServletResponse res) throws Exception{
+		PrintWriter pw = res.getWriter();
+		pw.write("ok");
+		pw.close();
+		
+	}
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public void cancle(HttpServletResponse res) throws Exception{
+		PrintWriter pw = res.getWriter();
+		pw.write("error");
+		pw.close();
 	}
 }
