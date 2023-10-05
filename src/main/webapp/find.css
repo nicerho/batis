@@ -2,9 +2,9 @@ body{
     margin: 0;
     padding: 0;
 }
-.img_game>label{
+/*.img_game>label{
 	border:1px solid red;
-}
+}*/
 span,label{
     display: block;
 }
