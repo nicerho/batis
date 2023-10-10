@@ -1,42 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reviewDB">
-<!-- parameterType : string int double long 등 ...
-	resultType : select 에서만 사용,
--->
+	<!-- parameterType : string int double long 등 ... resultType : select 에서만 
+		사용, -->
 	<select id="selectall" resultType="Datavo" parameterType="int">
-		select * from review order by ridx desc limit #{z},2
+		select
+		* from review order by ridx desc limit #{z},2
 	</select>
-	<!-- 내용검색
-	mysql : concat
-	oracle : rtext like '%'||#{search}||'%' 
-	mssql : rtext like '%'+#{search}+'%'
-	 -->
-	<select id="selectSearch" resultType="Datavo" parameterType="string">
-		select * from review where rtext like CONCAT('%',#{search},'%') order by ridx desc
+	<!-- 내용검색 mysql : concat oracle : rtext like '%'||#{search}||'%' mssql : 
+		rtext like '%'+#{search}+'%' -->
+	<select id="selectSearch" resultType="Datavo"
+		parameterType="string">
+		select * from review where rtext like
+		CONCAT('%',#{search},'%') order by ridx desc
 	</select>
 	<insert id="review_insert">
-		insert into review values('0', #{rname}, #{rpw}, #{rtext}, now());
+		insert into review values('0', #{rname}, #{rpw},
+		#{rtext}, now());
 	</insert>
-	<select id="selectCount" resultType="string" parameterType="string">
-	select count(*) as cnt from review;
+	<select id="selectCount" resultType="string"
+		parameterType="string">
+		select count(*) as cnt from review;
 	</select>
 	<delete id="deleteById">
-	delete from review where ridx = #{value}
+		delete from review where ridx = #{value}
 	</delete>
-	<select id="selectOne" resultType="Datavo" parameterType="string">
-	select * from review where ridx = #{ridx}
+	<select id="selectOne" resultType="Datavo"
+		parameterType="string">
+		select * from review where ridx = #{ridx}
 	</select>
 	<update id="updateById">
-	update review set rtext=#{rtext},rdate=now() where ridx=#{ridx}
+		update review set rtext=#{rtext},rdate=now() where
+		ridx=#{ridx}
 	</update>
 	<insert id="fileInsert">
 		insert into files values('0',#{fname})
 	</insert>
-	<select id="selectAllFile" resultType="fileVO" parameterType="string">
+	<select id="selectAllFile" resultType="fileVO"
+		parameterType="string">
 		select * from files order by fidx desc;
 	</select>
 	<select id="searchId" parameterType="string" resultType="md">
-	select mno,mid,mpass,memail from member where mid=#{parameter}
+		select
+		mno,mid,mpass,memail from member where mid=#{parameter}
+	</select>
+	<select id="searchUser" parameterType="string" resultType="md">
+		select mno,mid,memail from member
+		<where>
+			mid=#{parameter}
+		</where>
+		order by mno desc
+	</select>
+	<select id="searchUser2" parameterType="Map" resultType="md">
+		select mno,mid,mtel from member
+		<where>
+			<if test="part == 1">
+				mid=#{data}
+			</if>
+			<if test="part == 2">
+				memail=#{data}
+			</if>
+			<if test="part == 3">
+				mtel like concat('%',#{data})
+			</if>
+			<if test="part == 4 and area != null">
+				mtel like concat('%',#{data}) and marea=#{area}
+			</if>
+		</where>
+		<!-- || = or && = and -->
+		order by mno desc
+	</select>
+	<!-- choose , when -->
+	<select id="searchUser3" parameterType="Map" resultType="md">
+		select * from member
+		<choose>
+			<when test="part == 'login'">
+				<where>
+					mid=#{userId} and mpass=#{userPw}
+				</where>
+			</when>
+			<when test="part == 'check'">
+				<where>
+					mid=#{userId}
+				</where>
+			</when>
+		</choose>
+		order by mno desc
 	</select>
 </mapper>
