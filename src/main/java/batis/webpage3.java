@@ -114,7 +114,7 @@ public class webpage3 {
 		Response res = client.newCall(req).execute();
 		
 		String result = res.body().string();
-		if(result.indexOf("200")>0) {
+		if(result.indexOf("202")>0) {
 			pw.write("ok");
 		}else {
 			pw.write("error");
