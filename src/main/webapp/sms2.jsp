@@ -20,7 +20,10 @@ function a(){
 	var http = new XMLHttpRequest();
 	http.onreadystatechange = function(){
 		if(http.readyState==XMLHttpRequest.DONE && http.status==200){
-			console.log(http.response);
+			var result = http.response;
+			if(result=="ok"){
+				alert("인증번호가 발송 되었습니다.")
+			}
 		}
 	}
 	http.open("POST","./smsok",true);

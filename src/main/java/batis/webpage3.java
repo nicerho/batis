@@ -1,6 +1,7 @@
 package batis;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
-
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -83,7 +84,7 @@ public class webpage3 {
 	// SMS 발송
 	@PostMapping("/smsok")
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public void smsOk(@RequestParam(required = false) String tel, @RequestParam(required = false) String context)
+	public void smsOk(@RequestParam(required = false) String tel, @RequestParam(required = false) String context,HttpServletResponse response)
 			throws IOException, Exception {
 		JSONObject code1 = new JSONObject();
 		JSONObject code2 = new JSONObject();
@@ -102,8 +103,8 @@ public class webpage3 {
 		// header 제작 코드 curl - 클라이언트에서 서버와 통신 할 수 있는 서버 실행 명령어 툴
 		OkHttpClient client = new OkHttpClient();
 		System.out.println(data);
-
-		/*Request req = new Request.Builder()
+		PrintWriter pw = response.getWriter();
+		Request req = new Request.Builder()
 				.addHeader("x-ncp-apigw-timestamp", timestamp)
 				.addHeader("x-ncp-iam-access-key", access_id)
 				.addHeader("x-ncp-apigw-signature-v2", makese())
@@ -113,8 +114,13 @@ public class webpage3 {
 		Response res = client.newCall(req).execute();
 		
 		String result = res.body().string();
+		if(result.indexOf("200")>0) {
+			pw.write("ok");
+		}else {
+			pw.write("error");
+		}
 		System.out.println(req);
-		System.out.println(result);*/
+		System.out.println(result);
 
 	}
 
